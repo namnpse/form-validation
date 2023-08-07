@@ -5,20 +5,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.namnp.validateformincleanarchitecture.domain.EmailValidationUseCase
-import com.namnp.validateformincleanarchitecture.domain.PasswordValidationUseCase
-import com.namnp.validateformincleanarchitecture.domain.RepeatedPasswordValidationUseCase
-import com.namnp.validateformincleanarchitecture.domain.TermsValidationUseCase
+import com.namnp.validateformincleanarchitecture.domain.FormRegistrationUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
-class RegisterFormViewModel(
-    private val validateEmail: EmailValidationUseCase = EmailValidationUseCase(),
-    private val validatePassword: PasswordValidationUseCase = PasswordValidationUseCase(),
-    private val validateRepeatedPassword: RepeatedPasswordValidationUseCase = RepeatedPasswordValidationUseCase(),
-    private val validateTerms: TermsValidationUseCase = TermsValidationUseCase()
+@HiltViewModel
+class RegisterFormViewModel @Inject constructor(
+    private val formRegistrationUseCase: FormRegistrationUseCase
 ): ViewModel() {
 
     var state by mutableStateOf(RegisterFormState())
@@ -55,10 +52,10 @@ class RegisterFormViewModel(
     }
 
     private fun submitData() {
-        val emailResult = validateEmail.execute(state.email)
-        val passwordResult = validatePassword.execute(state.password)
-        val repeatedPasswordResult = validateRepeatedPassword.execute(state.password, state.repeatedPassword)
-        val termsResult = validateTerms.execute(state.acceptedTerms)
+        val emailResult = formRegistrationUseCase.emailValidationUseCase.execute(state.email)
+        val passwordResult = formRegistrationUseCase.passwordValidationUseCase.execute(state.password)
+        val repeatedPasswordResult = formRegistrationUseCase.repeatedPasswordValidationUseCase.execute(state.password, state.repeatedPassword)
+        val termsResult = formRegistrationUseCase.termsValidationUseCase.execute(state.acceptedTerms)
 
         val hasError = listOf(
             emailResult,
