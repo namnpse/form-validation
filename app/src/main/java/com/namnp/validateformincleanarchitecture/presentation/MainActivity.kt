@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
@@ -19,19 +20,24 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.namnp.validateformincleanarchitecture.ui.theme.ValidateFormInCleanArchitectureTheme
-import dagger.hilt.android.AndroidEntryPoint
+import org.koin.androidx.compose.koinViewModel
 
-@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    // use for AppCompatActivity
+//    private val viewModel: RegisterFormViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             ValidateFormInCleanArchitectureTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val viewModel = viewModel<RegisterFormViewModel>()
+                    val viewModel: RegisterFormViewModel = koinViewModel()
+//                    val viewModel = viewModel<RegisterFormViewModel>()
                     val state = viewModel.state
                     val context = LocalContext.current
                     LaunchedEffect(key1 = context) {

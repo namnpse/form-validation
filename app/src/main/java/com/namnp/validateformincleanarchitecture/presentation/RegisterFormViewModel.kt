@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-@HiltViewModel
-class RegisterFormViewModel @Inject constructor(
+//@HiltViewModel
+class RegisterFormViewModel(
     private val formRegistrationUseCase: FormRegistrationUseCase
 ): ViewModel() {
 
